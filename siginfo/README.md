@@ -20,6 +20,5 @@ Now, run your script and send a <code>SIGUSR1</code> signal to the running proce
 kill -SIGUSR1 ${pid}
 ```
 
-![image](https://user-images.githubusercontent.com/875703/52584898-a18b9500-2e33-11e9-9d9c-ba2539f3dfb2.png)
 
 *[1]: In addition, on MacOS or BSD system, the <code>SIGINFO</code> signal can be used as well.*
