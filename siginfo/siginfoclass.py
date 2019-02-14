@@ -1,6 +1,8 @@
 import sys
 import signal
 import os
+import stat
+import atexit
 
 from siginfo.localclass import LocalClass
 
@@ -13,15 +15,15 @@ class SiginfoBasic:
         self.MAX_LEVELS = 0  # How many parent stack frames to display
         self.OUTPUT = output or sys.stdout  # where to print the output to
         self.pid = os.getpid()
+        self.signals = []
 
         # Bind SIGINFO if available and requested
         if info:
             if hasattr(signal, 'SIGINFO'):
                 signal.signal(signal.SIGINFO, self)
-                self.OUTPUT.write('Using SIGINFO\n')
-                self.OUTPUT.write('Interrupt using\n')
+                self.OUTPUT.write('Listening for >>SIGINFO<<\n')
                 self.OUTPUT.write('==> kill -s INFO {}\n'.format(self.pid))
-
+                self.signals.append('INFO')
             else:
                 self.OUTPUT.write('No SIGINFO availale\n')
 
@@ -29,9 +31,9 @@ class SiginfoBasic:
         if usr1:
             if hasattr(signal, 'SIGUSR1'):
                 signal.signal(signal.SIGUSR1, self)
-                self.OUTPUT.write('Using SIGUSR1\n')
-                self.OUTPUT.write('Interrupt using\n')
+                self.OUTPUT.write('Listening for >>SIGUSR1<<\n')
                 self.OUTPUT.write('==> kill -s USR1 {}\n'.format(self.pid))
+                self.signals.append('USR1')
             else:
                 self.OUTPUT.write('No SIGUSR1 availale\n')
 
@@ -39,9 +41,9 @@ class SiginfoBasic:
         if usr2:
             if hasattr(signal, 'SIGUSR2'):
                 signal.signal(signal.SIGUSR2, self)
-                self.OUTPUT.write('Using SIGUSR2\n')
-                self.OUTPUT.write('Interrupt using\n')
+                self.OUTPUT.write('Listening for >>SIGUSR2<<\n')
                 self.OUTPUT.write('==> kill -s USR2 {}\n'.format(self.pid))
+                self.signals.append('USR2')
             else:
                 self.OUTPUT.write('No SIGUSR2 availale\n')
 
@@ -56,6 +58,30 @@ class SiginfoBasic:
             self.COLUMNS = max([self.COLUMNS, int(columns)-20])
         except:
             self.COLUMNS = 80
+
+    def create_info_script(self, path=None, prefix='',overwrite=False):
+        """
+        User convenience function
+        Creates an executable file that can be used to trigger the
+        registered signals
+        """
+        if path is None:
+            path = os.path.expanduser('~')
+        for sig in self.signals:
+            filename = os.path.abspath(
+                os.path.join(
+                    path,
+                    '{}siginfo-{}'.format(prefix, sig)
+                )
+            )
+            if not os.path.isfile(filename) or overwrite:
+                with open(filename, 'w') as fh:
+                    fh.write('#!/bin/sh\n')
+                    fh.write('kill -s {} {}'.format(sig, self.pid))
+                os.chmod(filename, os.stat(filename).st_mode | stat.S_IEXEC)
+
+                atexit.register(self.delete_file, filename)
+
 
     def _print_frame(self, frame):
         """
@@ -108,6 +134,15 @@ class SiginfoBasic:
                 break
 
     __call__ = _call
+
+    @staticmethod
+    def delete_file(filename):
+        """
+        used for atexit cleanup
+        """
+        if os.path.isfile(filename):
+            os.remove(filename)
+
 
 
 class SigInfoPDB(SiginfoBasic):

@@ -13,8 +13,8 @@ class LocalClass:
     """
     def __init__(self, local_vars, columns=80):
         self.var_names = list(local_vars.keys())
-        self.types = [type(local_vars[key]).__name__ for key in local_vars]
-        self.values = [str(local_vars[key]) for key in local_vars]
+        self.types = [type(local_vars[key]).__name__ for key in self.var_names]
+        self.values = [str(local_vars[key]) for key in self.var_names]
 
         self._add_headers()
 
