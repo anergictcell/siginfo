@@ -168,6 +168,7 @@ class SigInfoSingle(SiginfoBasic):
         self._default = default
 
     def __call__(self, signum, frame):
-        self.OUTPUT.write('{}\n'.format(
-            frame.f_locals.get(self._varname, self._default)
-        ))
+        if self._varname:
+            self.OUTPUT.write('{}\n'.format(
+                frame.f_locals.get(self._varname, self._default)
+            ))
