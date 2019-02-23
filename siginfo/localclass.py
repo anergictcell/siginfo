@@ -5,11 +5,23 @@ from siginfo.utils import left_string
 
 class LocalClass:
     """
-    Handles the formatting and display
-    of the locale object
+    Formats the ``locale`` object for display in the tty.
+
     Can handle any kind  of object to format it in a
+
+    +-----+------+-------+
     | KEY | TYPE | VALUE |
+    +-----+------+-------+
+
     like table
+
+    Args
+    ----
+    local_vars : object
+        Object to display in table. key will be one row
+    columns : int
+        Width (in columns) of the output stream. Default: 80
+
     """
     def __init__(self, local_vars, columns=80):
         self.var_names = list(local_vars.keys())

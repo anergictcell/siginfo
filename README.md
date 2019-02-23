@@ -71,3 +71,4 @@ info_handler.OUTPUT = open('mylog.log', 'a')  # write the output to mylog.log
 #### <code>SiginfoBasic</code>
 
 This class prints out the current stack and let's the program continue automatically. You can also print out the caller and the caller's caller etc.
+
