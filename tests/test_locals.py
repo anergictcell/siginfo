@@ -2,6 +2,7 @@ import unittest
 
 from siginfo.localclass import LocalClass
 
+
 class LocalTest(unittest.TestCase):
     def test_init(self):
         my_locals = {
@@ -11,15 +12,15 @@ class LocalTest(unittest.TestCase):
         }
         res = LocalClass(my_locals)
         assert type(res) is LocalClass
-        assert len(res.types) is 4
-        assert len(res.values) is 4
-        assert len(res.var_names) is 4
+        assert len(res.types) == 4
+        assert len(res.values) == 4
+        assert len(res.var_names) == 4
         for key in my_locals:
             assert type(my_locals[key]).__name__ in res.types
         for idx, key in enumerate(res.var_names):
-            if idx is 0: continue
+            if idx == 0:
+                continue
             assert str(res.values[idx]) == str(my_locals[key])
-
 
     def test_max_width(self):
         pass

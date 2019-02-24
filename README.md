@@ -32,6 +32,9 @@ ln -s ./siginfo <PATH_TO_SIGINFO_REPO>/siginfo
 Include <code>siginfo</code> in your python script
 ```python
 import siginfo
+
+# Initialize SignInfo Class
+siginfo.SiginfoBasic()
 ```
 
 ### General <code>signinfo</code> classes
@@ -68,7 +71,5 @@ info_handler.MAX_LEVELS = 4  # Print the current frame + 3 parent frames
 info_handler.OUTPUT = open('mylog.log', 'a')  # write the output to mylog.log
 ```
 
-#### <code>SiginfoBasic</code>
-
-This class prints out the current stack and let's the program continue automatically. You can also print out the caller and the caller's caller etc.
-
+### API docs
+For a more detailed API description, check out https://esbme.com/siginfo/docs/
