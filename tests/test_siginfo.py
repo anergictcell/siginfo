@@ -52,6 +52,16 @@ class MockFrame:
         self.f_back = back
 
 
+class MockFunction:
+    def __init__(self):
+        self.called = 0
+        self.called_with = []
+
+    def __call__(self, *args, **kwargs):
+        self.called += 1
+        self.called_with.append((args, kwargs))
+
+
 class SigInfoInitTests(unittest.TestCase):
     def setUp(self):
         si.sys.stdout = MockOutput()
@@ -224,9 +234,114 @@ class SiginfoFramePrinting(unittest.TestCase):
         assert mock_out.lines[14] == 'MockClass: co_name=my_test_function_line_2'
 
 
-@unittest.skip('Not yet testing calling')
 class SiginfoCalling(unittest.TestCase):
-    pass
+    def test_signal_calling(self):
+        si.subprocess.check_output = lambda x: '5 80'
+        mock_out = MockOutput()
+        mock_frame = MockFrame()
+        res = si.SiginfoBasic(
+            info=False,
+            usr1=False,
+            usr2=False,
+            output=mock_out)
+
+        res._print_frame = MockFunction()
+
+        res(1, mock_frame)
+
+        assert len(mock_out.lines) == 10
+        assert res._print_frame.called == 1
+        assert res._print_frame.called_with[0][0][0] == mock_frame
+
+    def test_signal_calling_multiple_level(self):
+        si.subprocess.check_output = lambda x: '5 80'
+        mock_out = MockOutput()
+        mock_frame_back = MockFrame(line_number=2)
+        mock_frame = MockFrame(back=mock_frame_back)
+        res = si.SiginfoBasic(
+            info=False,
+            usr1=False,
+            usr2=False,
+            output=mock_out)
+
+        res._print_frame = MockFunction()
+
+        res(1, mock_frame)
+
+        assert len(mock_out.lines) == 16
+        assert res._print_frame.called == 2
+        assert res._print_frame.called_with[0][0][0] == mock_frame
+        assert res._print_frame.called_with[1][0][0] == mock_frame_back
+
+    def test_signal_calling_limit_levels(self):
+        """
+        2 levels of stack frames are present
+        but MAX_LEVELS is set to 1
+        """
+        si.subprocess.check_output = lambda x: '5 80'
+        mock_out = MockOutput()
+        mock_frame_back = MockFrame(line_number=2)
+        mock_frame = MockFrame(back=mock_frame_back)
+        res = si.SiginfoBasic(
+            info=False,
+            usr1=False,
+            usr2=False,
+            output=mock_out)
+        res.MAX_LEVELS = 1
+
+        res._print_frame = MockFunction()
+
+        res(1, mock_frame)
+
+        assert len(mock_out.lines) == 10
+        assert res._print_frame.called == 1
+        assert res._print_frame.called_with[0][0][0] == mock_frame
+
+
+class SiginfoSingleCalling(unittest.TestCase):
+    def test_setting_variables(self):
+        mock_out = MockOutput()
+        res = si.SigInfoSingle(
+            info=False,
+            usr1=False,
+            usr2=False,
+            output=mock_out)
+        res.set_var('foo')
+
+        assert res._varname == 'foo'
+        assert res._default is None
+
+    def test_getting_existing_variables(self):
+        mock_out = MockOutput()
+        mock_frame = MockFrame({'foo': '12', 'bar': 'abc'})
+        res = si.SigInfoSingle(
+            info=False,
+            usr1=False,
+            usr2=False,
+            output=mock_out)
+        res.set_var('foo')
+
+        mock_out.lines = []
+        res(1, mock_frame)
+
+        assert len(mock_out.lines) == 1
+        assert mock_out.lines[0] == '12\n'
+
+    def test_getting_nonexisting_variables(self):
+        mock_out = MockOutput()
+        mock_frame = MockFrame({'foo': '12', 'bar': 'abc'})
+        res = si.SigInfoSingle(
+            info=False,
+            usr1=False,
+            usr2=False,
+            output=mock_out)
+        res.set_var('xyz', 'foobar')
+
+        mock_out.lines = []
+        res(1, mock_frame)
+
+        assert len(mock_out.lines) == 1
+        assert mock_out.lines[0] == 'foobar\n'
 
 
 if __name__ == '__main__':
