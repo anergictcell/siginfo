@@ -3,6 +3,7 @@ import signal
 import os
 import stat
 import atexit
+import subprocess
 
 from siginfo.localclass import LocalClass
 
@@ -159,13 +160,13 @@ class SiginfoBasic:
                 self.OUTPUT.write('No SIGUSR2 availale\n')
 
         if not info and not usr1 and not usr2:
-            self.OUTPUT.write('No signal specified')
+            self.OUTPUT.write('No signal specified\n')
         self.OUTPUT.flush()
 
         # Attempts to use all columns of the current tty window size
         # Falls back to 80 columns by default
         try:
-            rows, columns = os.popen('stty size', 'r').read().split()
+            rows, columns = subprocess.check_output(['stty', 'size']).split()
             self.COLUMNS = max([self.COLUMNS, int(columns)-20])
         except Exception:
             self.COLUMNS = 80
