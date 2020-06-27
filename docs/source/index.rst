@@ -21,7 +21,13 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
+   :caption: Contents:
 
+   siginfobasic
+   siginfopdb
+   siginfosingle
+   locals
+   utils
 
 
 Indices and tables
@@ -31,34 +37,6 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-SiginfoBasic
-====================
-.. autoclass:: siginfo.siginfoclass.SiginfoBasic
-   :members:
-   :no-private-members:
-   :no-special-members:
-
-SigInfoPDB
-====================
-.. autoclass:: siginfo.siginfoclass.SigInfoPDB
-   :members:
-   :inherited-members:
-   :show-inheritance:
 
 
-SigInfoSingle
-=====================
-.. autoclass:: siginfo.siginfoclass.SigInfoSingle
-   :members:
-   :inherited-members:
-   :show-inheritance:
 
-locals
-===================
-.. automodule:: siginfo.localclass
-   :members:
-
-utils
-===================
-.. automodule:: siginfo.utils
-   :members:
