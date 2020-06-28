@@ -105,6 +105,7 @@ venv.bak/
 
 # auto-deployment
 deploy_docs.sh
+build_dist.sh
 
 # Mac-stuff
 .DS_Store
