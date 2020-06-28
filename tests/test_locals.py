@@ -11,7 +11,7 @@ class LocalTest(unittest.TestCase):
             'c': {'foo': 'bar'}
         }
         res = LocalClass(my_locals)
-        assert type(res) is LocalClass
+        assert isinstance(res, LocalClass), (res, type(res))
         assert len(res.types) == 4
         assert len(res.values) == 4
         assert len(res.var_names) == 4

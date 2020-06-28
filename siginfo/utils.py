@@ -34,5 +34,5 @@ def left_string(string, padding):
     if len(string) < padding:
         return '{string}{padding}'.format(
             string=string,
-            padding=' '*(padding-len(string))
+            padding=' '*(int(padding)-len(string))
         )

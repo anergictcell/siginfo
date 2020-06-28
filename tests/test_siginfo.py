@@ -5,7 +5,7 @@ import sys
 OLD_OUT = sys.stdout
 
 
-class MockOutput:
+class MockOutput(object):
     def __init__(self):
         self.lines = []
 
@@ -16,7 +16,7 @@ class MockOutput:
         pass
 
 
-class MockSignal:
+class MockSignal(object):
     def __init__(self, info=True, usr1=True, usr2=True):
         if info:
             self.SIGINFO = 1
@@ -30,7 +30,7 @@ class MockSignal:
         self.signals.append((sigtype, func))
 
 
-class MockClass:
+class MockClass(object):
     def __init__(self, attrs):
         for key in attrs:
             self.__setattr__(key, attrs[key])
@@ -42,7 +42,7 @@ class MockClass:
         ))
 
 
-class MockFrame:
+class MockFrame(object):
     def __init__(self, local_vars={}, line_number=0, back=None):
         self.f_locals = local_vars
         self.f_code = MockClass(
@@ -52,7 +52,7 @@ class MockFrame:
         self.f_back = back
 
 
-class MockFunction:
+class MockFunction(object):
     def __init__(self):
         self.called = 0
         self.called_with = []
@@ -72,7 +72,7 @@ class SigInfoInitTests(unittest.TestCase):
 
     def test_init(self):
         res = si.SiginfoBasic()
-        assert type(res) is si.SiginfoBasic
+        assert isinstance(res, si.SiginfoBasic)
         assert isinstance(res.pid, int)
         assert isinstance(res.MAX_LEVELS, int)
         assert isinstance(res.COLUMNS, int)
