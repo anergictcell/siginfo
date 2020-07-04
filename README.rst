@@ -72,11 +72,11 @@ It will now print the current callstack with basic information about all local v
 
 Installation
 ============
-I want to add this to pypy, but not yet done. Clone the git repo and create a symlink from your python script folder to the ``signint`` folder.
+You can install siginfo via pip
 
 .. code:: bash
 
-    ln -s ./siginfo <PATH_TO_SIGINFO_REPO>/siginfo
+    pip install siginfo
 
 
 Usage
