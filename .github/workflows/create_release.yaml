@@ -26,9 +26,11 @@ jobs:
           python -m pip install build
           python -m build
           TARNAME=$(ls -1 dist/siginfo*.tar.gz | head -n 1)
-          echo "::set-output name=tar_filename::$TARNAME"
+          # echo "::set-output name=tar_filename::$TARNAME"
+          echo "tar_filename=${TARNAME}" >> $GITHUB_OUTPUT
           WHEELNAME=$(ls -1 dist/siginfo*.whl | head -n 1)
-          echo "::set-output name=wheel_filename::$WHEELNAME"
+          # echo "::set-output name=wheel_filename::$WHEELNAME"
+          echo "wheel_filename=${WHEELNAME}" >> $GITHUB_OUTPUT
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
