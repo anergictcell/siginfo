@@ -21,12 +21,10 @@ jobs:
       - name: Build project
         id: build_package
         run: |
-          sudo apt purge python3-setuptools
           python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
-          python -m pip install sdist wheel
-          python3 -m pip install -Uv setuptools==62.1.0
-          python setup.py sdist bdist_wheel
+          python -m pip install -r requirements.txt || echo "No requirements.txt present"
+          python -m pip install build
+          python -m build
           TARNAME=$(ls -1 dist/siginfo*.tar.gz | head -n 1)
           echo "::set-output name=tar_filename::$TARNAME"
           WHEELNAME=$(ls -1 dist/siginfo*.whl | head -n 1)
