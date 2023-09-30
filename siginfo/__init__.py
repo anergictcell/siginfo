@@ -4,5 +4,12 @@
 
 from siginfo.siginfoclass import SiginfoBasic, SigInfoPDB, SigInfoSingle
 
-__version__ = '0.9'
+
+__version__ = '0.10'
 __author__ = 'Jonas Marcello'
+
+__all__ = (
+    "SiginfoBasic",
+    "SigInfoPDB",
+    "SigInfoSingle"
+)

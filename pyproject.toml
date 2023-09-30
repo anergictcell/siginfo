@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "siginfo"
+description = "A Python package to help debugging and monitoring python script"
+readme = "README.rst"
+requires-python = ">=2.7"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Unix",
+    "Programming Language :: Python :: 2.7",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development :: Bug Tracking",
+    "Topic :: Software Development :: Debuggers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Logging",
+    "Topic :: System :: Monitoring"
+]
+license = {text = "MIT"}
+authors = [
+    {name = "Jonas Marcello", email = "jonas.marcello@esbme.com"}
+]
+keywords = [
+    "signal", "debug", "monitoring"
+]
+dependencies = []
+dynamic = ["version"]
+
+[tool.setuptools]
+packages = ["siginfo"]
+include-package-data = true
+
+[project.urls]
+Homepage = "https://github.com/anergictcell/siginfo"
+Repository = "https://github.com/anergictcell/siginfo"
+"Bug Tracker" = "https://github.com/anergictcell/siginfo/issues"
+Documentation = "https://siginfo.readthedocs.io/"
+
+[tool.setuptools.dynamic]
+version = {attr = "siginfo.__version__"}
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.black]
+target-versions = ["py37", "py38", "py39", "py310"]

@@ -1,4 +1,4 @@
-def left_string(string, padding):
+def left_string(string: str, padding: int) -> str:
     """
     Formats a string with padding. Either adds spaces to the end or truncates
 
@@ -29,9 +29,10 @@ def left_string(string, padding):
     """
     if len(string) > padding:
         return '{}...'.format(string[0:padding-3])
-    if len(string) == padding:
+    elif len(string) == padding:
         return string
-    if len(string) < padding:
+    else:
+        # len(string) < padding
         return '{string}{padding}'.format(
             string=string,
             padding=' '*(int(padding)-len(string))
